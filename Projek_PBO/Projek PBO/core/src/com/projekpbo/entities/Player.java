@@ -31,6 +31,7 @@ public class Player extends Rectangle implements Health {
     public State state;
 
     public Player() {
+        super();
         this.width = playerWidth;
         this.height = playerHeight;
         state = State.FALLING;

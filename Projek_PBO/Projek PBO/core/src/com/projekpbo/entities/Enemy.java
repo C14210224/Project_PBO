@@ -17,11 +17,6 @@ public interface Enemy {
 }
 
 class EvilBird extends Rectangle implements Enemy {
-    void run() {
-        if(state == State.POSITIONING) {
-            this.x
-        }
-    }
 
 }
 

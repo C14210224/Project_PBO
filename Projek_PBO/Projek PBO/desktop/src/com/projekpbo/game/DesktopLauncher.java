@@ -2,7 +2,6 @@ package com.projekpbo.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.projekpbo.game.MainGame;
 import static com.projekpbo.game.MainGame.windowWidth;
 import static com.projekpbo.game.MainGame.windowHeight;
 

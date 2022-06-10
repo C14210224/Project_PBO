@@ -111,8 +111,6 @@ public class GameScreen implements Screen {
 
         player.movePlayer(delta, camera, projectiles);
 
-
-
         generateObstacle(obsFrequency); //May or may not generate obstacles
 
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext(); ) {

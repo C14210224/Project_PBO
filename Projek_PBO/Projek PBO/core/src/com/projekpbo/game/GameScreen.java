@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -31,6 +32,8 @@ public class GameScreen implements Screen {
 
     private Texture playerJumpSpr;
     private Texture playerFallSpr;
+    private Texture playerSpriteSh;
+    private Animation playerDefault;
 
 
     private ArrayList<Projectile> projectiles = new ArrayList<>();
@@ -52,6 +55,7 @@ public class GameScreen implements Screen {
 
     public long score = 0;
 
+    String playerSpriteShPath = "player-Sheet.png";
     private String playerJumpSprPath = "playerJump.png";
     private String playerFallSprPath = "playerFall.png";
     private String obstacleSpritePath = "wall.png";
@@ -65,6 +69,8 @@ public class GameScreen implements Screen {
         playerFallSpr = new Texture(playerFallSprPath);
         obstacleSprite = new Texture(obstacleSpritePath);
         background = new Texture(backgroundPath);
+        playerSpriteSh = new Texture(playerSpriteShPath);
+        playerDefault = new Animation(playerSpriteSh, 72, 72);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 
@@ -90,8 +96,9 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, windowWidth, windowHeight);
-        if((player).state == Player.State.JUMPING) game.batch.draw(playerJumpSpr, player.x, player.y);
-        else game.batch.draw(playerFallSpr, player.x, player.y);
+//        if((player).state == Player.State.JUMPING) game.batch.draw(playerJumpSpr, player.x, player.y);
+//        else game.batch.draw(playerFallSpr, player.x, player.y);
+        game.batch.draw(playerDefault.animate(), player.x, player.y);
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext();) {
             Obstacle obstacle = iter.next();
             game.batch.draw(obstacleSprite, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
@@ -132,6 +139,18 @@ public class GameScreen implements Screen {
         for(int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).moveProjectile(delta);
             for(int j = 0; j < obstacles.size(); j++) {
+                if(projectiles.get(i).x + projectileWidth < 0) {
+                    projectiles.remove(i);
+                    i--;
+                    break;
+                }
+
+                if(projectiles.get(i).x > windowWidth) {
+                    projectiles.remove(i);
+                    i--;
+                    break;
+                }
+
                 if(projectiles.get(i).overlaps(obstacles.get(j))) {
                     projectiles.remove(i);
                     obstacles.remove(j);

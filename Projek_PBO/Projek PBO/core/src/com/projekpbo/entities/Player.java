@@ -21,8 +21,9 @@ public class Player extends Rectangle implements Health {
     private static int playerWidth = 64;
     private static int playerHeight = 64;
     private int health = 10;
-    private double projectileFreq = 5;
+    public double projectileFreq = 5;
     private long lastProjectileTime;
+    private ArrayList<PickUp> pickUps;
 
     public enum State {
         FALLING, JUMPING
@@ -37,6 +38,7 @@ public class Player extends Rectangle implements Health {
         state = State.FALLING;
         this.x = (int)(windowWidth*0.3) - (playerWidth/2);
         this.y = windowHeight/2 - playerHeight/2;
+        pickUps = new ArrayList<>();
     }
 
     @Override
@@ -45,13 +47,16 @@ public class Player extends Rectangle implements Health {
     }
 
     void launchProjectile(Vector2 direction, ArrayList<Projectile> projectileList) {
-        //Create new projectile
-        //Determine projectile initial x and y
         Projectile bullet = new Projectile(this.x + 64, this.y + 20, direction);
         projectileList.add(bullet);
     }
 
     public void movePlayer(float delta, OrthographicCamera camera, ArrayList<Projectile> projectileList) {
+        for(int i = 0; i < pickUps.size(); i++) {
+            if(pickUps.get(i).durationExpired()) pickUps.remove(i);
+            i--;
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             velocity -= addedVelocity;
             this.state = State.JUMPING;

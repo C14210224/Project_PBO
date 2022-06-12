@@ -22,8 +22,9 @@ public class Player extends Rectangle implements Health {
     private static int playerHeight = 64;
     private int health = 10;
     public double projectileFreq = 5;
+    public double projectileSpeed = 300;
     private long lastProjectileTime;
-    private ArrayList<PickUp> pickUps;
+    public ArrayList<PickUp> pickUps;
 
     public enum State {
         FALLING, JUMPING
@@ -47,14 +48,24 @@ public class Player extends Rectangle implements Health {
     }
 
     void launchProjectile(Vector2 direction, ArrayList<Projectile> projectileList) {
-        Projectile bullet = new Projectile(this.x + 64, this.y + 20, direction);
+        Projectile bullet = new Projectile(this.x + 64, this.y + 20, direction, projectileSpeed);
         projectileList.add(bullet);
     }
 
     public void movePlayer(float delta, OrthographicCamera camera, ArrayList<Projectile> projectileList) {
         for(int i = 0; i < pickUps.size(); i++) {
-            if(pickUps.get(i).durationExpired()) pickUps.remove(i);
-            i--;
+            if(pickUps.get(i).durationExpired()) {
+                System.out.println("Removing pickup!");
+                pickUps.remove(i);
+                System.out.println("start");
+                for(PickUp pu : pickUps) {
+                    System.out.println(pu.getClass());
+                }
+                System.out.println("end");
+                i--;
+            } else {
+                pickUps.get(i).doEffect();
+            }
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -63,10 +74,10 @@ public class Player extends Rectangle implements Health {
         } else {
             this.state = State.FALLING;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.x -= horizontalSpeed * delta;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
             this.x += horizontalSpeed * delta;
         }
         if(Gdx.input.isTouched() && TimeUtils.millis() - lastProjectileTime > 1000/projectileFreq) {

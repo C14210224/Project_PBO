@@ -3,38 +3,35 @@ package com.projekpbo.entities;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public interface PickUp {
-    void pickedUp(Player player);
-    void doEffect();
-    void reverseEffect();
-    boolean durationExpired();
-}
-
-class PiercingBulletsPickup extends Rectangle implements PickUp {
+public class BulletRatePickup extends Obstacle implements PickUp {
     long effectDuration = 10000;
     long startTime;
-
-    PiercingBulletsPickup() {
-        startTime = TimeUtils.millis();
-    }
+    double prevFreq;
+    Player player;
 
     @Override
     public void pickedUp(Player player) {
-
+        this.player = player;
+        this.startTime = TimeUtils.millis();
+        prevFreq = player.projectileFreq;
     }
+
     @Override
     public void doEffect() {
-
+        player.projectileFreq = 10;
     }
 
     @Override
     public void reverseEffect() {
+        player.projectileFreq = prevFreq;
 
     }
 
     @Override
     public boolean durationExpired() {
-        if(TimeUtils.millis() - startTime > effectDuration) {
+        if (TimeUtils.millis() - startTime > effectDuration) {
+            reverseEffect();
+            System.out.println("Duration Expired!");
             return true;
         }
         return false;

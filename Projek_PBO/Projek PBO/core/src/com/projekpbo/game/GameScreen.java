@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -15,9 +16,7 @@ import java.util.*;
 import static com.projekpbo.game.MainGame.windowWidth;
 import static com.projekpbo.game.MainGame.windowHeight;
 
-import com.projekpbo.entities.Obstacle;
-import com.projekpbo.entities.Player;
-import com.projekpbo.entities.Projectile;
+import com.projekpbo.entities.*;
 
 //Test Commit lol
 //jannnnccooookkkkk
@@ -37,18 +36,16 @@ public class GameScreen implements Screen {
 
 
     private ArrayList<Projectile> projectiles = new ArrayList<>();
-    private int projectileHeight = 16;
     private int projectileWidth = 16;
-    private int projectileSpeed = 200;
-    private double projectileFreq = 1;
-    private long lastProjectileTime;
+    private Texture projectileSprite;
 
     private ArrayList<Obstacle> obstacles = new ArrayList<>();
     private long lastObstacleSpawn;
     private double obsFrequency = 1.5;
     private int obstacleWidth = 64;
     private int obstacleHeight = 64;
-    private Texture obstacleSprite;
+    private Texture obstacleSpriteSheet;
+    private Animation obstacleAnim;
     private int obstacleSpeed = 200;
 
     private Texture background;
@@ -58,7 +55,8 @@ public class GameScreen implements Screen {
     String playerSpriteShPath = "player-Sheet.png";
     private String playerJumpSprPath = "playerJump.png";
     private String playerFallSprPath = "playerFall.png";
-    private String obstacleSpritePath = "wall.png";
+    private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";
+    private String projectileSpritePath = "wall.png";
     private String backgroundPath = "background.png";
     private String bgmPath = "";
     private String sfxPath = "";
@@ -67,10 +65,12 @@ public class GameScreen implements Screen {
         this.game = game;
         playerJumpSpr = new Texture(playerJumpSprPath);
         playerFallSpr = new Texture(playerFallSprPath);
-        obstacleSprite = new Texture(obstacleSpritePath);
+        obstacleSpriteSheet = new Texture(obstacleSpriteSheetPath);
+        obstacleAnim = new Animation(obstacleSpriteSheet, 72, 72);
         background = new Texture(backgroundPath);
         playerSpriteSh = new Texture(playerSpriteShPath);
         playerDefault = new Animation(playerSpriteSh, 72, 72);
+        projectileSprite = new Texture(projectileSpritePath);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 
@@ -101,11 +101,23 @@ public class GameScreen implements Screen {
         game.batch.draw(playerDefault.animate(), player.x, player.y);
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext();) {
             Obstacle obstacle = iter.next();
-            game.batch.draw(obstacleSprite, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+            if(obstacle instanceof BirdObstacle) {
+                game.batch.draw(obstacleAnim.animate(), obstacle.x, obstacle.y);
+            }
+            else if(obstacle instanceof BulletSpeedPickup) {
+                game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
+            }
+            else if(obstacle instanceof BulletRatePickup) {
+                game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
+            } else {
+                game.batch.draw(projectileSprite, obstacle.x, obstacle.y); //projectileSprite used temporarily
+
+            }
         }
         for(Iterator<Projectile> iter = projectiles.iterator(); iter.hasNext();) {
             Projectile projectile = iter.next();
-            game.batch.draw(obstacleSprite, projectile.x, projectile.y, projectile.width, projectile.height);
+            game.batch.draw(projectileSprite, projectile.x, projectile.y, projectile.width, projectile.height);
         }
         game.font.draw(game.batch, "Score: " + score, 10, windowHeight-10);
 
@@ -123,11 +135,24 @@ public class GameScreen implements Screen {
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext(); ) {
             Obstacle obstacle = iter.next();
 
-            obstacle.x -= obstacleSpeed * delta;
+            obstacle.moveObstacle(delta);
 
             if(obstacle.overlaps(player)) {
-                Obstacle.totalObstacleNum = 0; //resets number of obstacles spawned
-                game.setScreen(new GameOver(this.game, score));
+                if(obstacle instanceof PickUp) {
+                    for(int i = 0; i < player.pickUps.size(); i++) {
+                        if(obstacle.getClass() == player.pickUps.get(i).getClass()) {
+                            player.pickUps.get(i).reverseEffect();
+                            player.pickUps.remove(i);
+                            i--;
+                        }
+                    }
+                    player.pickUps.add((PickUp) obstacle);
+                    ((PickUp) obstacle).pickedUp(player);
+                    iter.remove();
+                } else {
+                    Obstacle.totalObstacleNum = 0; //resets number of obstacles spawned
+                    game.setScreen(new GameOver(this.game, score));
+                }
             }
 
             if(player.x > obstacle.x+obstacleWidth) score = obstacle.getObstacleNum()/2;
@@ -151,9 +176,9 @@ public class GameScreen implements Screen {
                     break;
                 }
 
-                if(projectiles.get(i).overlaps(obstacles.get(j))) {
-                    projectiles.remove(i);
+                if(projectiles.get(i).overlaps(obstacles.get(j)) && !(obstacles.get(j) instanceof PickUp)) {
                     obstacles.remove(j);
+                    projectiles.remove(i);
                     i--;
                     break;
                 }
@@ -175,6 +200,17 @@ public class GameScreen implements Screen {
                 if(slots.size() == 0) continue;
                 Obstacle obstacle = new Obstacle();
 
+                if(MathUtils.random(0,10) > 8) {
+                    obstacle = new BirdObstacle();
+                } else {
+                    if(MathUtils.random(0,100) >= 90) {
+                        if(MathUtils.random(0, 100) >= 49) {
+                            obstacle = new BulletRatePickup();
+                        } else {
+                            obstacle = new BulletSpeedPickup();
+                        }
+                    }
+                }
                 obstacle.width = obstacleWidth;
                 obstacle.height = obstacleHeight;
 

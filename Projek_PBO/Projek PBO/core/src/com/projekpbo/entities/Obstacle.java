@@ -9,18 +9,27 @@ public class Obstacle extends Rectangle {
     private int obstacleWidth = 64;
     private int obstacleHeight = 64;
     private Texture obstacleSprite;
-    private int obstacleSpeed = 200;
+    protected int obstacleSpeed = 200;
     public static int totalObstacleNum = 0;
     private static int obstacleNum = 1;
 
 
-    public Obstacle() {
+    public Obstacle(int obstacleSpeed) {
         super();
         Obstacle.totalObstacleNum++;
         this.obstacleNum = totalObstacleNum;
+        this.obstacleSpeed = obstacleSpeed;
+    }
+
+    public Obstacle() {
+        this(200);
     }
 
     public long getObstacleNum() {
         return obstacleNum;
+    }
+
+    public void moveObstacle(float delta) {
+        this.x -= delta * obstacleSpeed;
     }
 }

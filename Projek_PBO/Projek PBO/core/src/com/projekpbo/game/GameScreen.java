@@ -50,6 +50,9 @@ public class GameScreen implements Screen {
 
     private Texture background;
 
+    int wallFreq = 1; //frequency of wall spawning attempts
+    int wallChance = 50; //int ranging from 0 to 100. describes the chance (%) of spawning a wall
+    long lastWallSpawn = 0;
     public long score = 0;
 
     String playerSpriteShPath = "player-Sheet.png";
@@ -96,8 +99,6 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, windowWidth, windowHeight);
-//        if((player).state == Player.State.JUMPING) game.batch.draw(playerJumpSpr, player.x, player.y);
-//        else game.batch.draw(playerFallSpr, player.x, player.y);
         game.batch.draw(playerDefault.animate(), player.x, player.y);
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext();) {
             Obstacle obstacle = iter.next();
@@ -110,7 +111,10 @@ public class GameScreen implements Screen {
             }
             else if(obstacle instanceof BulletRatePickup) {
                 game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
-            } else {
+            } else if(obstacle instanceof Wall) {
+                game.batch.draw(projectileSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
+            }
+            else { //Default obstacle image
                 game.batch.draw(projectileSprite, obstacle.x, obstacle.y); //projectileSprite used temporarily
 
             }
@@ -119,6 +123,7 @@ public class GameScreen implements Screen {
             Projectile projectile = iter.next();
             game.batch.draw(projectileSprite, projectile.x, projectile.y, projectile.width, projectile.height);
         }
+
         game.font.draw(game.batch, "Score: " + score, 10, windowHeight-10);
 
         game.batch.end();
@@ -131,11 +136,15 @@ public class GameScreen implements Screen {
         player.movePlayer(delta, camera, projectiles);
 
         generateObstacle(obsFrequency); //May or may not generate obstacles
+        generateWall(wallFreq, wallChance);
 
         for(Iterator<Obstacle> iter = obstacles.iterator(); iter.hasNext(); ) {
             Obstacle obstacle = iter.next();
 
             obstacle.moveObstacle(delta);
+            if(obstacle.x + obstacle.width < 0) {
+                iter.remove();
+            }
 
             if(obstacle.overlaps(player)) {
                 if(obstacle instanceof PickUp) {
@@ -154,9 +163,8 @@ public class GameScreen implements Screen {
                     game.setScreen(new GameOver(this.game, score));
                 }
             }
-
-            if(player.x > obstacle.x+obstacleWidth) score = obstacle.getObstacleNum()/2;
         }
+        score += 1;
 
     }
 
@@ -177,7 +185,17 @@ public class GameScreen implements Screen {
                 }
 
                 if(projectiles.get(i).overlaps(obstacles.get(j)) && !(obstacles.get(j) instanceof PickUp)) {
-                    obstacles.remove(j);
+                    score += 100;
+                    if(obstacles.get(j) instanceof BirdObstacle) {
+                        score += 50;
+                    }
+                    if(obstacles.get(j) instanceof Wall) {
+                        if(((Wall)(obstacles.get(j))).takeDamage()) {
+                            obstacles.remove(j);
+                        }
+                    } else {
+                        obstacles.remove(j);
+                    }
                     projectiles.remove(i);
                     i--;
                     break;
@@ -185,11 +203,23 @@ public class GameScreen implements Screen {
             }
         }
     }
+    void generateWall(double freq, int chance) {
+        if(TimeUtils.millis() - lastWallSpawn > 1000/freq) {
+            int height = (int)MathUtils.random(Player.tmp.height * 2, windowHeight/2);
+            if(MathUtils.random(0, 100) <= chance) {
+                Wall wall = new Wall(Wall.wallWidth, height);
+                wall.x = windowWidth;
+                wall.y = MathUtils.random(0,2) == 0 ? 0 : windowHeight - height;
+                obstacles.add(wall);
+            }
+            lastWallSpawn = TimeUtils.millis();
+        }
+    }
 
     void generateObstacle(double freq) {
         if(TimeUtils.millis() - lastObstacleSpawn > 1000/freq) {
             int amount = MathUtils.random(0, 3); //amount of obstacles to generate
-            int obsGap = MathUtils.random(5, 20);
+            int obsGap = MathUtils.random(5, 20); //random gap between slots
             ArrayList<Integer> slots = new ArrayList<>();
 
             for(int i = 0; i <  windowHeight / (obstacleHeight + obsGap); i++) {

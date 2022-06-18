@@ -9,10 +9,18 @@ public interface Enemy {
     }
 }
 
-class EvilBird extends Rectangle implements Enemy {
+class EvilBird extends Rectangle implements Enemy , Health {
+    int health = 10;
 
+    public void takeDamage(int damage) {
+        this.health -= damage;
+    }
 }
 
-class EvilElephant implements Enemy {
+class EvilElephant implements Enemy, Health {
+    int health = 10;
 
+    public void takeDamage(int damage) {
+        this.health -= damage;
+    }
 }

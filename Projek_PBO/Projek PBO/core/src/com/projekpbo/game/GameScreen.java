@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
     private Texture background;
 
     int wallFreq = 1; //frequency of wall spawning attempts
-    int wallChance = 50; //int ranging from 0 to 100. describes the chance (%) of spawning a wall
+    int wallChance = 5; //int ranging from 0 to 100. describes the chance (%) of spawning a wall
     long lastWallSpawn = 0;
     public long score = 0;
 
@@ -205,7 +205,7 @@ public class GameScreen implements Screen {
     }
     void generateWall(double freq, int chance) {
         if(TimeUtils.millis() - lastWallSpawn > 1000/freq) {
-            int height = (int)MathUtils.random(Player.tmp.height * 2, windowHeight/2);
+            int height = (int)MathUtils.random(Player.tmp.height * 3, windowHeight/2);
             if(MathUtils.random(0, 100) <= chance) {
                 Wall wall = new Wall(Wall.wallWidth, height);
                 wall.x = windowWidth;

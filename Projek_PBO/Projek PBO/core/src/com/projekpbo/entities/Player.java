@@ -21,7 +21,7 @@ public class Player extends Rectangle implements Health {
     private static int playerWidth = 64;
     private static int playerHeight = 64;
     private int health = 10;
-    public double projectileFreq = 10;
+    public double projectileFreq = 1;
     public double projectileSpeed = 300;
     private long lastProjectileTime;
     public ArrayList<PickUp> pickUps;

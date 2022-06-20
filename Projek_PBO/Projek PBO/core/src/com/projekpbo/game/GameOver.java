@@ -56,7 +56,7 @@ public class GameOver implements Screen {
         if (score < 1000) {
             game.impactFont.draw(game.batch, "YOUR SCORE: " + score, (windowWidth / 2) - 110, windowHeight / 2 + 100);
         } else {
-            int finalScore = (int)score;
+            long finalScore = score;
             int n = -1;
             while (finalScore/10 > 0) {
                 finalScore /= 10;
@@ -67,13 +67,13 @@ public class GameOver implements Screen {
             game.impactFont.draw(game.batch, "YOUR SCORE: " + score, (windowWidth / 2) - (100 + (n * 75 / 10)), windowHeight / 2 + 100);
         }
 //        game.font.draw(game.batch, "Your Score: " + score, (windowWidth / 2) - 50, windowHeight / 2 + 30);
-        game.batch.draw(restart, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 100);
+        game.batch.draw(restart, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 70);
         game.batch.draw(exit, (windowWidth / 2) - (exit.getWidth() / 2), (windowHeight / 2) - (exit.getHeight() / 2) - 200);
         game.batch.end();
 
-        if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 457 && Gdx.input.getY() <= 532) {
+        if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 454 && Gdx.input.getY() <= 483) {
             game.batch.begin();
-            game.batch.draw(restartHover, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 100);
+            game.batch.draw(restartHover, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 70);
 
             game.batch.end();
         }
@@ -84,9 +84,9 @@ public class GameOver implements Screen {
         }
 
         if (Gdx.input.isTouched()) {
-//            System.out.println(Gdx.input.getX());
-//            System.out.println(Gdx.input.getY());
-            if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 457 && Gdx.input.getY() <= 532) {
+            System.out.println(Gdx.input.getX());
+            System.out.println(Gdx.input.getY());
+            if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 454 && Gdx.input.getY() <= 483) {
                 game.setScreen(new GameScreen(this.game));
             }
             if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 562 && Gdx.input.getY() <= 633) {

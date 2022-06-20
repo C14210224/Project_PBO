@@ -252,7 +252,7 @@ public class GameScreen implements Screen {
 
                 obstacle.x = windowWidth;
                 int chosenSlot = MathUtils.random(0, slots.size()-1);
-                obstacle.y = chosenSlot * (obstacleHeight + obsGap);
+                obstacle.y = slots.get(chosenSlot) * (obstacleHeight + obsGap);
 
                 slots.remove(chosenSlot);
 

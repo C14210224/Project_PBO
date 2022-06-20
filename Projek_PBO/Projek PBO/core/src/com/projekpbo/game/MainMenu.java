@@ -15,18 +15,18 @@ public class MainMenu implements Screen {
     MainGame game;
     OrthographicCamera camera;
     private Texture background;
-    private Texture title;
+    private Texture startHover;
     private Texture startButton;
 
-    private String backgroundPath = "background.png";
-    private String titlePath = "title.png";
-    private String startButtonPath = "play.png";
+    private String backgroundPath = "background menu.png";
+    private String startHoverPath = "playButton2.png";
+    private String startButtonPath = "playButton1.png";
     private String bgmPath = "";
 
     MainMenu(final MainGame game) {
         this.game = game;
         background = new Texture(backgroundPath);
-        title = new Texture(titlePath);
+        startHover = new Texture(startHoverPath);
         startButton = new Texture(startButtonPath);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, windowWidth, windowHeight);
@@ -45,9 +45,15 @@ public class MainMenu implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(background, 0, 0, windowWidth, windowHeight);
-        game.batch.draw(title, (windowWidth / 2) - 250, windowHeight / 2 + 100, 500, 150);
+//        game.batch.draw(startHover, (windowWidth / 2) - 250, windowHeight / 2 + 100, 500, 150);
         game.batch.draw(startButton, (windowWidth / 2) - (startButton.getWidth() / 2), (windowHeight / 2) - (startButton.getHeight() / 2) - 100);
         game.batch.end();
+
+        if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 457 && Gdx.input.getY() <= 532) {
+            game.batch.begin();
+            game.batch.draw(startHover, (windowWidth / 2) - (startButton.getWidth() / 2), (windowHeight / 2) - (startButton.getHeight() / 2) - 100);
+            game.batch.end();
+        }
 
         if (Gdx.input.isTouched()) {
 //            System.out.println(Gdx.input.getX());

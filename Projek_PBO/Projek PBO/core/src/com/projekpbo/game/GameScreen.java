@@ -124,7 +124,7 @@ public class GameScreen implements Screen {
             game.batch.draw(projectileSprite, projectile.x, projectile.y, projectile.width, projectile.height);
         }
 
-        game.font.draw(game.batch, "Score: " + score, 10, windowHeight-10);
+        game.impactFont.draw(game.batch, "SCORE: " + score, 10, windowHeight-10);
 
         game.batch.end();
 
@@ -168,32 +168,37 @@ public class GameScreen implements Screen {
 
     }
 
+    long obstNum = 0;
+
     void moveProjectile(float delta) {
         for(int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).moveProjectile(delta);
+            if(projectiles.get(i).x + projectileWidth < 0) {
+                projectiles.remove(i);
+                i--;
+                continue;
+            }
+
+            if(projectiles.get(i).x > windowWidth) {
+                projectiles.remove(i);
+                i--;
+                continue;
+            }
             for(int j = 0; j < obstacles.size(); j++) {
-                if(projectiles.get(i).x + projectileWidth < 0) {
-                    projectiles.remove(i);
-                    i--;
-                    break;
-                }
-
-                if(projectiles.get(i).x > windowWidth) {
-                    projectiles.remove(i);
-                    i--;
-                    break;
-                }
-
                 if(projectiles.get(i).overlaps(obstacles.get(j)) && !(obstacles.get(j) instanceof PickUp)) {
+                    obstNum++;
+                    System.out.println(obstNum + " Clashed with obstacle");
                     score += 100;
                     if(obstacles.get(j) instanceof BirdObstacle) {
                         score += 50;
                     }
+
                     if(obstacles.get(j) instanceof Wall) {
                         if(((Wall)(obstacles.get(j))).takeDamage()) {
                             obstacles.remove(j);
                         }
                     } else {
+                        System.out.println( obstNum + " Removing obstacle");
                         obstacles.remove(j);
                     }
                     projectiles.remove(i);

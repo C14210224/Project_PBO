@@ -169,7 +169,6 @@ public class GameScreen implements Screen {
 
     }
 
-    long obstNum = 0;
 
     void moveProjectile(float delta) {
         for(int i = 0; i < projectiles.size(); i++) {
@@ -187,8 +186,6 @@ public class GameScreen implements Screen {
             }
             for(int j = 0; j < obstacles.size(); j++) {
                 if(projectiles.get(i).overlaps(obstacles.get(j)) && !(obstacles.get(j) instanceof PickUp)) {
-                    obstNum++;
-                    System.out.println(obstNum + " Clashed with obstacle");
                     score += 100;
                     if(obstacles.get(j) instanceof BirdObstacle) {
                         score += 50;
@@ -199,7 +196,6 @@ public class GameScreen implements Screen {
                             obstacles.remove(j);
                         }
                     } else {
-                        System.out.println( obstNum + " Removing obstacle");
                         obstacles.remove(j);
                     }
                     projectiles.remove(i);

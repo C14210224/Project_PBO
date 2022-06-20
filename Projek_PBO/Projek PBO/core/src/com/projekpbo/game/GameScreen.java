@@ -3,6 +3,7 @@ package com.projekpbo.game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -123,7 +124,7 @@ public class GameScreen implements Screen {
             Projectile projectile = iter.next();
             game.batch.draw(projectileSprite, projectile.x, projectile.y, projectile.width, projectile.height);
         }
-
+        game.impactFont.setColor(Color.GRAY);
         game.impactFont.draw(game.batch, "SCORE: " + score, 10, windowHeight-10);
 
         game.batch.end();

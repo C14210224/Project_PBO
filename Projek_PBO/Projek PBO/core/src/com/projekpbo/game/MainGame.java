@@ -2,6 +2,7 @@ package com.projekpbo.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class MainGame extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
+	BitmapFont impactFont;
 
 	public static int windowHeight = 800;
 	public static int windowWidth = 800;
@@ -18,7 +20,8 @@ public class MainGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		this.setScreen(new GameScreen(this));
+		impactFont = new BitmapFont(Gdx.files.internal("impactFont.fnt"));
+		this.setScreen(new MainMenu(this));
 	}
 
 	@Override

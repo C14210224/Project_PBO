@@ -3,6 +3,7 @@ package com.projekpbo.game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -123,8 +124,8 @@ public class GameScreen implements Screen {
             Projectile projectile = iter.next();
             game.batch.draw(projectileSprite, projectile.x, projectile.y, projectile.width, projectile.height);
         }
-
-        game.font.draw(game.batch, "Score: " + score, 10, windowHeight-10);
+        game.impactFont.setColor(Color.GRAY);
+        game.impactFont.draw(game.batch, "SCORE: " + score, 10, windowHeight-10);
 
         game.batch.end();
 
@@ -168,27 +169,28 @@ public class GameScreen implements Screen {
 
     }
 
+
     void moveProjectile(float delta) {
         for(int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).moveProjectile(delta);
+            if(projectiles.get(i).x + projectileWidth < 0) {
+                projectiles.remove(i);
+                i--;
+                continue;
+            }
+
+            if(projectiles.get(i).x > windowWidth) {
+                projectiles.remove(i);
+                i--;
+                continue;
+            }
             for(int j = 0; j < obstacles.size(); j++) {
-                if(projectiles.get(i).x + projectileWidth < 0) {
-                    projectiles.remove(i);
-                    i--;
-                    break;
-                }
-
-                if(projectiles.get(i).x > windowWidth) {
-                    projectiles.remove(i);
-                    i--;
-                    break;
-                }
-
                 if(projectiles.get(i).overlaps(obstacles.get(j)) && !(obstacles.get(j) instanceof PickUp)) {
                     score += 100;
                     if(obstacles.get(j) instanceof BirdObstacle) {
                         score += 50;
                     }
+
                     if(obstacles.get(j) instanceof Wall) {
                         if(((Wall)(obstacles.get(j))).takeDamage()) {
                             obstacles.remove(j);
@@ -246,7 +248,7 @@ public class GameScreen implements Screen {
 
                 obstacle.x = windowWidth;
                 int chosenSlot = MathUtils.random(0, slots.size()-1);
-                obstacle.y = chosenSlot * (obstacleHeight + obsGap);
+                obstacle.y = slots.get(chosenSlot) * (obstacleHeight + obsGap);
 
                 slots.remove(chosenSlot);
 

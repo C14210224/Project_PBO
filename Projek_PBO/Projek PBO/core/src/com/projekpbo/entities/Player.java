@@ -100,5 +100,12 @@ public class Player extends Rectangle implements Health {
             this.y = windowHeight-playerHeight;
             velocity = 0;
         }
+
+        if(this.x > windowWidth - playerWidth) {
+            this.x = windowWidth - playerWidth;
+        }
+        if(this.x < 0) {
+            this.x = 0;
+        }
     }
 }

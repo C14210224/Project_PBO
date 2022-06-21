@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(bulletSpeedPickupSprite.animate(), obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
             }
             else if(obstacle instanceof BulletRatePickup) {
-                game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
+                game.batch.draw(bulletRatePickupSprite.animate(), obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
             } else if(obstacle instanceof Wall) {
                 game.batch.draw(wallSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
             }

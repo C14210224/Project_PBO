@@ -62,7 +62,7 @@ public class GameScreen implements Screen {
     private String playerJumpSprPath = "playerJump.png";
     private String playerFallSprPath = "playerFall.png";
     private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";
-    private String projectileSpritePath = "tembok.png";
+    private String projectileSpritePath = "heartAttack.png";
     private String backgroundPath = "background.png";
     private String wallSpritePath = "tembok.png";
     private String bgmPath = "";
@@ -117,10 +117,10 @@ public class GameScreen implements Screen {
             else if(obstacle instanceof BulletRatePickup) {
                 game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
             } else if(obstacle instanceof Wall) {
-                game.batch.draw(projectileSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
+                game.batch.draw(wallSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
             }
             else { //Default obstacle image
-                game.batch.draw(projectileSprite, obstacle.x, obstacle.y); //projectileSprite used temporarily
+                game.batch.draw(wallSprite, obstacle.x, obstacle.y); //projectileSprite used temporarily
 
             }
         }

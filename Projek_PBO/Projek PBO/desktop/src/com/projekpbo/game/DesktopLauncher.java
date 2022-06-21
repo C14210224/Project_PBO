@@ -10,9 +10,10 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("Projek PBO");
+		config.setTitle("Ivory Skies");
 		config.setWindowedMode(windowWidth, windowHeight);
 		config.setResizable(false);
+		config.setWindowIcon("dumbo72px1.png");
 		new Lwjgl3Application(new MainGame(), config);
 	}
 }

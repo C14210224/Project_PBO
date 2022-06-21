@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
     private String projectileSpritePath = "heartAttack.png";
     private String backgroundPath = "background.png";
     private String wallSpritePath = "tembok.png";
-    private String ballonSpritePath = "ballon-animated.png";
+    private String ballonSpritePath = "whiteBallon-animated.png";
     private String bgmPath = "";
     private String sfxPath = "";
 
@@ -126,8 +126,9 @@ public class GameScreen implements Screen {
                 game.batch.draw(wallSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
             }
             else { //Default obstacle image
+                game.batch.setColor(obstacle.color);
                 game.batch.draw(ballonSprite.animate(), obstacle.x, obstacle.y); //projectileSprite used temporarily
-
+                game.batch.setColor(Color.WHITE);
             }
         }
         for(Iterator<Projectile> iter = projectiles.iterator(); iter.hasNext();) {

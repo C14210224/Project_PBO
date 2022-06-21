@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Projek PBO");
 		config.setWindowedMode(windowWidth, windowHeight);
+		config.setResizable(false);
 		new Lwjgl3Application(new MainGame(), config);
 	}
 }

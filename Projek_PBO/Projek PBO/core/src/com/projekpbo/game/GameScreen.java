@@ -42,6 +42,9 @@ public class GameScreen implements Screen {
 
     private Texture wallSprite;
 
+    private Animation ballonSprite;
+
+
     private ArrayList<Obstacle> obstacles = new ArrayList<>();
     private long lastObstacleSpawn;
     private double obsFrequency = 1.5;
@@ -65,6 +68,7 @@ public class GameScreen implements Screen {
     private String projectileSpritePath = "heartAttack.png";
     private String backgroundPath = "background.png";
     private String wallSpritePath = "tembok.png";
+    private String ballonSpritePath = "ballon-animated.png";
     private String bgmPath = "";
     private String sfxPath = "";
 
@@ -79,6 +83,7 @@ public class GameScreen implements Screen {
         playerDefault = new Animation(playerSpriteSh, 72, 72);
         projectileSprite = new Texture(projectileSpritePath);
         wallSprite = new Texture(wallSpritePath);
+        ballonSprite = new Animation(new Texture(ballonSpritePath),72,72);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 
@@ -120,7 +125,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(wallSprite, obstacle.x, obstacle.y, Wall.wallWidth, ((Wall)obstacle).wallHeight); //projectilesprite used temporarily
             }
             else { //Default obstacle image
-                game.batch.draw(wallSprite, obstacle.x, obstacle.y); //projectileSprite used temporarily
+                game.batch.draw(ballonSprite.animate(), obstacle.x, obstacle.y); //projectileSprite used temporarily
 
             }
         }

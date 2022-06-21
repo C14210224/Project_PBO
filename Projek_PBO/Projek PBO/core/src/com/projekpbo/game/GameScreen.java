@@ -40,6 +40,8 @@ public class GameScreen implements Screen {
     private int projectileWidth = 16;
     private Texture projectileSprite;
 
+    private Texture wallSprite;
+
     private ArrayList<Obstacle> obstacles = new ArrayList<>();
     private long lastObstacleSpawn;
     private double obsFrequency = 1.5;
@@ -62,6 +64,7 @@ public class GameScreen implements Screen {
     private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";
     private String projectileSpritePath = "wall.png";
     private String backgroundPath = "background.png";
+    private String wallSpritePath = "bricks.png";
     private String bgmPath = "";
     private String sfxPath = "";
 
@@ -75,6 +78,7 @@ public class GameScreen implements Screen {
         playerSpriteSh = new Texture(playerSpriteShPath);
         playerDefault = new Animation(playerSpriteSh, 72, 72);
         projectileSprite = new Texture(projectileSpritePath);
+        wallSprite = new Texture(wallSpritePath);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 

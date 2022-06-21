@@ -44,6 +44,8 @@ public class GameScreen implements Screen {
 
     private Animation ballonSprite;
 
+    private Animation bulletSpeedPickupSprite;
+    private Animation bulletRatePickupSprite;
 
     private ArrayList<Obstacle> obstacles = new ArrayList<>();
     private long lastObstacleSpawn;
@@ -70,6 +72,10 @@ public class GameScreen implements Screen {
     private String backgroundPath = "background.png";
     private String wallSpritePath = "tembok.png";
     private String ballonSpritePath = "whiteBallon-animated.png";
+
+    private String bulletSpeedPickupSpritePath = "BulletSpeedPickup.png";
+    private String bulletRatePickupSpritePath = "BulletRatePickup.png";
+
     private String bgmPath = "";
     private String sfxPath = "";
 
@@ -85,6 +91,9 @@ public class GameScreen implements Screen {
         projectileSprite = new Texture(projectileSpritePath);
         wallSprite = new Texture(wallSpritePath);
         ballonSprite = new Animation(new Texture(ballonSpritePath),100,100);
+
+        bulletRatePickupSprite = new Animation(new Texture(bulletRatePickupSpritePath),64,64);
+        bulletSpeedPickupSprite = new Animation(new Texture(bulletSpeedPickupSpritePath),64,64);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 
@@ -118,7 +127,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(obstacleAnim.animate(), obstacle.x, obstacle.y);
             }
             else if(obstacle instanceof BulletSpeedPickup) {
-                game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
+                game.batch.draw(bulletSpeedPickupSprite.animate(), obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily
             }
             else if(obstacle instanceof BulletRatePickup) {
                 game.batch.draw(background, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight); //projectileSprite used temporarily

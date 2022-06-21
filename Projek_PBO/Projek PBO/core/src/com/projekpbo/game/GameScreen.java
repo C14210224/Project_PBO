@@ -60,6 +60,16 @@ public class GameScreen implements Screen {
 
     private Texture background;
     private Music gameScreenMusic;
+    private Sound speedPickupSound;
+    private String speedPickupSoundPath = "pickupSound1.mp3";
+    public Sound ratePickupSound;
+    private String ratePickupSoundPath = "pickupSound2.mp3";
+    private Sound birdHitSound;
+    private String birdHitSoundPath = "birdHitSound.mp3";
+    private Sound balloonHitSound;
+    private String balloonHitSoundPath = "balloonHitSound.mp3";
+    private Sound breakWallSound;
+    private String breakWallSoundPath = "wallBreakSound.mp3";
 
     int wallFreq = 1; //frequency of wall spawning attempts
     int wallChance = 5; //int ranging from 0 to 100. describes the chance (%) of spawning a wall
@@ -80,7 +90,6 @@ public class GameScreen implements Screen {
     private String bulletRatePickupSpritePath = "BulletRatePickup.png";
 
     private String gameScreenMusicPath = "GSmusic.mp3";
-    private String sfxPath = "";
 
     //Del later
     ShapeRenderer sr;
@@ -97,6 +106,11 @@ public class GameScreen implements Screen {
         projectileSprite = new Texture(projectileSpritePath);
         wallSprite = new Texture(wallSpritePath);
         ballonSprite = new Animation(new Texture(ballonSpritePath),100,100);
+        speedPickupSound = Gdx.audio.newSound(Gdx.files.internal(speedPickupSoundPath));
+        ratePickupSound = Gdx.audio.newSound(Gdx.files.internal(ratePickupSoundPath));
+        breakWallSound = Gdx.audio.newSound(Gdx.files.internal(breakWallSoundPath));
+        birdHitSound = Gdx.audio.newSound(Gdx.files.internal(birdHitSoundPath));
+        balloonHitSound = Gdx.audio.newSound(Gdx.files.internal(balloonHitSoundPath));
 
         bulletRatePickupSprite = new Animation(new Texture(bulletRatePickupSpritePath),64,64);
         bulletSpeedPickupSprite = new Animation(new Texture(bulletSpeedPickupSpritePath),64,64);
@@ -187,10 +201,20 @@ public class GameScreen implements Screen {
                     }
                     player.pickUps.add((PickUp) obstacle);
                     ((PickUp) obstacle).pickedUp(player);
+                     if (obstacle instanceof BulletSpeedPickup) {
+                         speedPickupSound.play();
+                     } else if (obstacle instanceof BulletRatePickup) {
+                         ratePickupSound.play();
+                     }
                     iter.remove();
                 } else {
                     Obstacle.totalObstacleNum = 0; //resets number of obstacles spawned
                     gameScreenMusic.stop();
+                    speedPickupSound.stop();
+                    ratePickupSound.stop();
+                    breakWallSound.stop();
+                    birdHitSound.stop();
+                    balloonHitSound.stop();
                     game.setScreen(new GameOver(this.game, score));
                 }
             }
@@ -224,9 +248,15 @@ public class GameScreen implements Screen {
                     if(obstacles.get(j) instanceof Wall) {
                         if(((Wall)(obstacles.get(j))).takeDamage()) {
                             obstacles.remove(j);
+                            breakWallSound.play();
                             score += 400;
                         }
                     } else {
+                        if (obstacles.get(j) instanceof BirdObstacle) {
+                            birdHitSound.play();
+                        } else {
+                            balloonHitSound.play();
+                        }
                         obstacles.remove(j);
                     }
                     projectiles.remove(i);

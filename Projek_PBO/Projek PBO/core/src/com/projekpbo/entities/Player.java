@@ -2,6 +2,7 @@ package com.projekpbo.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,9 @@ public class Player extends Rectangle implements Health {
     public double projectileSpeed = 300;
     private long lastProjectileTime;
     public ArrayList<PickUp> pickUps;
+    private Sound shootSound;
+
+    private String shootSoundPath = "shootSound.mp3";
 
     public enum State {
         FALLING, JUMPING
@@ -40,6 +44,7 @@ public class Player extends Rectangle implements Health {
         this.x = (int)(windowWidth*0.3) - (playerWidth/2);
         this.y = windowHeight/2 - playerHeight/2;
         pickUps = new ArrayList<>();
+        shootSound = Gdx.audio.newSound(Gdx.files.internal(shootSoundPath));
     }
 
     @Override
@@ -50,6 +55,7 @@ public class Player extends Rectangle implements Health {
     void launchProjectile(Vector2 direction, ArrayList<Projectile> projectileList) {
         Projectile bullet = new Projectile(this.x + 64, this.y + 20, direction, projectileSpeed);
         projectileList.add(bullet);
+        shootSound.play();
     }
 
     public void movePlayer(float delta, OrthographicCamera camera, ArrayList<Projectile> projectileList) {

@@ -214,6 +214,7 @@ public class GameScreen implements Screen {
                     if(obstacles.get(j) instanceof Wall) {
                         if(((Wall)(obstacles.get(j))).takeDamage()) {
                             obstacles.remove(j);
+                            score += 400;
                         }
                     } else {
                         obstacles.remove(j);

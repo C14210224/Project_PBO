@@ -83,7 +83,7 @@ public class GameScreen implements Screen {
         playerDefault = new Animation(playerSpriteSh, 72, 72);
         projectileSprite = new Texture(projectileSpritePath);
         wallSprite = new Texture(wallSpritePath);
-        ballonSprite = new Animation(new Texture(ballonSpritePath),72,72);
+        ballonSprite = new Animation(new Texture(ballonSpritePath),100,100);
 //        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
 //        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
 

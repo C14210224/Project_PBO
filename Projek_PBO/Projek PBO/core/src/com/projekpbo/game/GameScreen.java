@@ -1,5 +1,6 @@
 package com.projekpbo.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -58,6 +59,7 @@ public class GameScreen implements Screen {
     private int obstacleSpeed = 200;
 
     private Texture background;
+    private Music gameScreenMusic;
 
     int wallFreq = 1; //frequency of wall spawning attempts
     int wallChance = 5; //int ranging from 0 to 100. describes the chance (%) of spawning a wall
@@ -77,7 +79,7 @@ public class GameScreen implements Screen {
     private String bulletSpeedPickupSpritePath = "BulletSpeedPickup.png";
     private String bulletRatePickupSpritePath = "BulletRatePickup.png";
 
-    private String bgmPath = "";
+    private String gameScreenMusicPath = "GSmusic.mp3";
     private String sfxPath = "";
 
     //Del later
@@ -115,7 +117,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        gameScreenMusic = Gdx.audio.newMusic(Gdx.files.internal(gameScreenMusicPath));
+        gameScreenMusic.setLooping(true);
+        gameScreenMusic.play();
     }
 
     @Override
@@ -186,6 +190,7 @@ public class GameScreen implements Screen {
                     iter.remove();
                 } else {
                     Obstacle.totalObstacleNum = 0; //resets number of obstacles spawned
+                    gameScreenMusic.stop();
                     game.setScreen(new GameOver(this.game, score));
                 }
             }
@@ -307,6 +312,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        gameScreenMusic.dispose();
     }
 }

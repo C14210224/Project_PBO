@@ -2,6 +2,7 @@ package com.projekpbo.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,12 +21,14 @@ public class GameOver implements Screen {
     private Texture restartHover;
     private Texture exit;
     private Texture exitHover;
+    private Sound gameOverSound;
 
     private String backgroundPath = "gameOver back.png";
     private String restartPath = "restartButton1.png";
     private String restartHoverPath = "restartButton2.png";
     private String exitPath = "exitButton1.png";
     private String exitHoverPath = "exitButton2.png";
+    private String gameOverSoundPath = "GOsound.mp3";
 
     GameOver(final MainGame game, long score) {
         this.game = game;
@@ -41,7 +44,8 @@ public class GameOver implements Screen {
 
     @Override
     public void show() {
-
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal(gameOverSoundPath));
+        gameOverSound.play();
     }
 
     @Override
@@ -75,7 +79,6 @@ public class GameOver implements Screen {
         if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 454 && Gdx.input.getY() <= 483) {
             game.batch.begin();
             game.batch.draw(restartHover, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 70);
-
             game.batch.end();
         }
         if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 562 && Gdx.input.getY() <= 633) {
@@ -86,9 +89,11 @@ public class GameOver implements Screen {
 
         if (Gdx.input.isTouched()) {
             if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 454 && Gdx.input.getY() <= 483) {
+                gameOverSound.stop();
                 game.setScreen(new GameScreen(this.game));
             }
             if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 562 && Gdx.input.getY() <= 633) {
+                gameOverSound.stop();
                 game.setScreen(new MainMenu(this.game));
             }
         }
@@ -116,6 +121,6 @@ public class GameOver implements Screen {
 
     @Override
     public void dispose() {
-
+        gameOverSound.dispose();
     }
 }

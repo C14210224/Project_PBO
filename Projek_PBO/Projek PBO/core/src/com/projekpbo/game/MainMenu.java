@@ -2,6 +2,7 @@ package com.projekpbo.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -17,11 +18,12 @@ public class MainMenu implements Screen {
     private Texture background;
     private Texture startHover;
     private Texture startButton;
+    private Music menuMusic;
 
     private String backgroundPath = "background menu.png";
     private String startHoverPath = "playButton2.png";
     private String startButtonPath = "playButton1.png";
-    private String bgmPath = "";
+    private String menuMusicPath = "MMmusicNew.mp3";
 
     MainMenu(final MainGame game) {
         this.game = game;
@@ -35,7 +37,9 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
-
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal(menuMusicPath));
+        menuMusic.setLooping(true);
+        menuMusic.play();
     }
 
     @Override
@@ -59,6 +63,7 @@ public class MainMenu implements Screen {
 //            System.out.println(Gdx.input.getX());
 //            System.out.println(Gdx.input.getY());
             if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 457 && Gdx.input.getY() <= 532) {
+                menuMusic.stop();
                 game.setScreen(new GameScreen(this.game));
             }
         }
@@ -86,6 +91,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
+        menuMusic.dispose();
     }
 }

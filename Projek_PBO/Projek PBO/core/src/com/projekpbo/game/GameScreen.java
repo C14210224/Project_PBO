@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
     private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";
     private String projectileSpritePath = "wall.png";
     private String backgroundPath = "background.png";
-    private String wallSpritePath = "bricks.png";
+    private String wallSpritePath = "tembok.png";
     private String bgmPath = "";
     private String sfxPath = "";
 

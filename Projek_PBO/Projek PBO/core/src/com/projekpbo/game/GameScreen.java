@@ -61,7 +61,8 @@ public class GameScreen implements Screen {
     long lastWallSpawn = 0;
     public long score = 0;
 
-    String playerSpriteShPath = "player-Sheet.png";
+    String playerSpriteShPath = "playerNew.png";
+//    String playerSpriteShPath = "player-Sheet.png";
     private String playerJumpSprPath = "playerJump.png";
     private String playerFallSprPath = "playerFall.png";
     private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";

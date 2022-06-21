@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -79,6 +80,9 @@ public class GameScreen implements Screen {
     private String bgmPath = "";
     private String sfxPath = "";
 
+    //Del later
+    ShapeRenderer sr;
+
     GameScreen(final MainGame game) {
         this.game = game;
         playerJumpSpr = new Texture(playerJumpSprPath);
@@ -103,6 +107,9 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, windowWidth, windowHeight);
 
         player = new Player();
+
+        //del later
+        sr = new ShapeRenderer();
     }
 
 
@@ -136,7 +143,7 @@ public class GameScreen implements Screen {
             }
             else { //Default obstacle image
                 game.batch.setColor(obstacle.color);
-                game.batch.draw(ballonSprite.animate(), obstacle.x, obstacle.y); //projectileSprite used temporarily
+                game.batch.draw(ballonSprite.animate(), obstacle.x, obstacle.y - 32); //projectileSprite used temporarily
                 game.batch.setColor(Color.WHITE);
             }
         }
@@ -148,8 +155,6 @@ public class GameScreen implements Screen {
         game.impactFont.draw(game.batch, "SCORE: " + score, 10, windowHeight-10);
 
         game.batch.end();
-
-        //Input
 
 
         moveProjectile(delta);

@@ -6,11 +6,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -21,19 +18,12 @@ import static com.projekpbo.game.MainGame.windowHeight;
 
 import com.projekpbo.game.entities.*;
 
-//Test Commit lol
-//jannnnccooookkkkk
 public class GameScreen implements Screen {
     MainGame game;
     private OrthographicCamera camera;
 
-    private Music bgm;
-    private Sound sfx;
-
     private Player player;
 
-    private Texture playerJumpSpr;
-    private Texture playerFallSpr;
     private Texture playerSpriteSh;
     private Animation playerDefault;
 
@@ -56,10 +46,10 @@ public class GameScreen implements Screen {
     private int obstacleHeight = 64;
     private Texture obstacleSpriteSheet;
     private Animation obstacleAnim;
-    private int obstacleSpeed = 200;
 
     private Texture background;
     private Music gameScreenMusic;
+
     private Sound speedPickupSound;
     private String speedPickupSoundPath = "pickupSound1.mp3";
     public Sound ratePickupSound;
@@ -77,9 +67,6 @@ public class GameScreen implements Screen {
     public long score = 0;
 
     String playerSpriteShPath = "playerNew.png";
-//    String playerSpriteShPath = "player-Sheet.png";
-    private String playerJumpSprPath = "playerJump.png";
-    private String playerFallSprPath = "playerFall.png";
     private String obstacleSpriteSheetPath = "enemy-bird-Sheet.png";
     private String projectileSpritePath = "heartAttack.png";
     private String backgroundPath = "background.png";
@@ -91,13 +78,8 @@ public class GameScreen implements Screen {
 
     private String gameScreenMusicPath = "GSmusic.mp3";
 
-    //Del later
-    ShapeRenderer sr;
-
     GameScreen(final MainGame game) {
         this.game = game;
-        playerJumpSpr = new Texture(playerJumpSprPath);
-        playerFallSpr = new Texture(playerFallSprPath);
         obstacleSpriteSheet = new Texture(obstacleSpriteSheetPath);
         obstacleAnim = new Animation(obstacleSpriteSheet, 72, 72);
         background = new Texture(backgroundPath);
@@ -114,18 +96,11 @@ public class GameScreen implements Screen {
 
         bulletRatePickupSprite = new Animation(new Texture(bulletRatePickupSpritePath),64,64);
         bulletSpeedPickupSprite = new Animation(new Texture(bulletSpeedPickupSpritePath),64,64);
-//        bgm = Gdx.audio.newMusic(Gdx.files.internal(bgmPath));
-//        sfx = Gdx.audio.newSound(Gdx.files.internal(sfxPath));
-
-//        bgm.setLooping(true);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, windowWidth, windowHeight);
 
         player = new Player();
-
-        //del later
-        sr = new ShapeRenderer();
     }
 
 
@@ -342,6 +317,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        speedPickupSound.dispose();
+        ratePickupSound.dispose();
+        birdHitSound.dispose();
+        balloonHitSound.dispose();
+        breakWallSound.dispose();
         gameScreenMusic.dispose();
     }
 }

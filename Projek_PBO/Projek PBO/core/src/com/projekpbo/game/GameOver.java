@@ -55,7 +55,6 @@ public class GameOver implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(background, 0, 0, windowWidth, windowHeight);
-//        game.batch.draw(gameover, (windowWidth / 2) - 250, windowHeight / 2 + 100, 500, 150);
         game.impactFont.setColor(new Color(0xffffffff));
 
         long finalScore = score;
@@ -67,11 +66,8 @@ public class GameOver implements Screen {
         if((int)(score / Math.pow(10, n)) == 1) {
             n++;
         }
-//            System.out.println(n);
-//            System.out.println(100 + (n * 75 / 10));
         game.impactFont.draw(game.batch, "YOUR SCORE: " + score, (windowWidth / 2) - (85 + (n * 75f / 10)), windowHeight / 2 + 100);
 
-//        game.font.draw(game.batch, "Your Score: " + score, (windowWidth / 2) - 50, windowHeight / 2 + 30);
         game.batch.draw(restart, (windowWidth / 2) - (restart.getWidth() / 2), (windowHeight / 2) - (restart.getHeight() / 2) - 70);
         game.batch.draw(exit, (windowWidth / 2) - (exit.getWidth() / 2), (windowHeight / 2) - (exit.getHeight() / 2) - 200);
         game.batch.end();

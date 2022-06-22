@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import static com.projekpbo.game.MainGame.windowWidth;
@@ -49,7 +48,6 @@ public class MainMenu implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(background, 0, 0, windowWidth, windowHeight);
-//        game.batch.draw(startHover, (windowWidth / 2) - 250, windowHeight / 2 + 100, 500, 150);
         game.batch.draw(startButton, (windowWidth / 2) - (startButton.getWidth() / 2), (windowHeight / 2) - (startButton.getHeight() / 2) - 100);
         game.batch.end();
 
@@ -60,8 +58,6 @@ public class MainMenu implements Screen {
         }
 
         if (Gdx.input.isTouched()) {
-//            System.out.println(Gdx.input.getX());
-//            System.out.println(Gdx.input.getY());
             if (Gdx.input.getX() >= 286 && Gdx.input.getX() <= 509 && Gdx.input.getY() >= 457 && Gdx.input.getY() <= 532) {
                 menuMusic.stop();
                 game.setScreen(new GameScreen(this.game));

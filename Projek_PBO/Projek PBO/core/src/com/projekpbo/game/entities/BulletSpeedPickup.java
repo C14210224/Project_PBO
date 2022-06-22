@@ -1,6 +1,5 @@
 package com.projekpbo.game.entities;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class BulletSpeedPickup extends Obstacle implements PickUp {

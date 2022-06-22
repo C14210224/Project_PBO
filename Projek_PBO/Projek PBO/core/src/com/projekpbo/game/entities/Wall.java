@@ -1,7 +1,5 @@
 package com.projekpbo.game.entities;
 
-import com.badlogic.gdx.math.Rectangle;
-
 public class Wall extends Obstacle {
     public static int wallWidth = 128;
     public int wallHeight;

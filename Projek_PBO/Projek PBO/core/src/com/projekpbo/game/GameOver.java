@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.projekpbo.entities.BulletRatePickup;
-import com.projekpbo.entities.Player;
 
 import static com.projekpbo.game.MainGame.windowWidth;
 import static com.projekpbo.game.MainGame.windowHeight;

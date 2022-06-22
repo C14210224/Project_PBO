@@ -19,7 +19,7 @@ import java.util.*;
 import static com.projekpbo.game.MainGame.windowWidth;
 import static com.projekpbo.game.MainGame.windowHeight;
 
-import com.projekpbo.entities.*;
+import com.projekpbo.game.entities.*;
 
 //Test Commit lol
 //jannnnccooookkkkk

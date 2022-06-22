@@ -1,4 +1,4 @@
-package com.projekpbo.entities;
+package com.projekpbo.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

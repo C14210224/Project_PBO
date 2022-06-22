@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import static com.projekpbo.game.MainGame.windowHeight;
 import static com.projekpbo.game.MainGame.windowWidth;
 
-public class Player extends Rectangle implements Health {
+public class Player extends Rectangle {
     private double acceleration = 1000; //acceleration downwards
     private double velocity = 0; //initial velocity
-    private double addedVelocity = 42;
+    private double addedVelocity = 42; //velocity added per frame of user input
     private int horizontalSpeed = 200;
     private static int playerWidth = 64;
     private static int playerHeight = 64;
-    private int health = 10;
     public double projectileFreq = 1;
     public double projectileSpeed = 300;
     private long lastProjectileTime;
@@ -30,26 +29,14 @@ public class Player extends Rectangle implements Health {
 
     private String shootSoundPath = "shootSound.mp3";
 
-    public enum State {
-        FALLING, JUMPING
-    }
-
-    public State state;
-
     public Player() {
         super();
         this.width = playerWidth;
         this.height = playerHeight;
-        state = State.FALLING;
         this.x = (int)(windowWidth*0.3) - (playerWidth/2);
         this.y = windowHeight/2 - playerHeight/2;
         pickUps = new ArrayList<>();
         shootSound = Gdx.audio.newSound(Gdx.files.internal(shootSoundPath));
-    }
-
-    @Override
-    public void takeDamage(int damage) {
-        this.health -= damage;
     }
 
     void launchProjectile(Vector2 direction, ArrayList<Projectile> projectileList) {
@@ -76,9 +63,6 @@ public class Player extends Rectangle implements Health {
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             velocity -= addedVelocity;
-            this.state = State.JUMPING;
-        } else {
-            this.state = State.FALLING;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.x -= horizontalSpeed * delta;
@@ -86,7 +70,7 @@ public class Player extends Rectangle implements Health {
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
             this.x += horizontalSpeed * delta;
         }
-        if(Gdx.input.isTouched() && TimeUtils.millis() - lastProjectileTime > 1000/projectileFreq) {
+        if(Gdx.input.isTouched() && TimeUtils.millis() - lastProjectileTime > 1000/projectileFreq) { //Fire projectiles towards the mouse
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
@@ -94,10 +78,11 @@ public class Player extends Rectangle implements Health {
             lastProjectileTime = TimeUtils.millis();
         }
 
-        //Physics
+        //Physics for vertical movement
         velocity += acceleration * delta;
         this.y -= velocity * delta;
 
+        //Movement Bounds
         if(this.y < 0) {
             this.y = 0;
             velocity = 0;

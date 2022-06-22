@@ -12,7 +12,6 @@ public class BulletSpeedPickup extends Obstacle implements PickUp {
     public void pickedUp(Player player) {
         startTime = TimeUtils.millis();
         prevSpeed = player.projectileSpeed;
-        System.out.println("Prev speed: " + player.projectileSpeed);
         this.player = player;
     }
 

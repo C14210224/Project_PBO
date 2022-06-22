@@ -7,8 +7,6 @@ public class Projectile extends Rectangle {
     private static int projectileHeight = 16;
     private static int projectileWidth = 16;
     private double projectileSpeed;
-
-    private int damage = 1;
     private Vector2 direction;
 
     public Projectile (float x, float y, Vector2 direction, double projectileSpeed) {
@@ -21,14 +19,13 @@ public class Projectile extends Rectangle {
         this.projectileSpeed = projectileSpeed;
     }
 
-    void takeDamage(Health target) {
-        target.takeDamage(damage);
-    }
-
     public void moveProjectile(float delta) {
+        //Get the unit vector of the projectile's direction
         double magnitude =  Math.sqrt(direction.x * direction.x + direction.y * direction.y);
         double x = direction.x / magnitude;
         double y = direction.y / magnitude;
+
+        //Move by the unit vector
         this.x += x * delta * projectileSpeed;
         this.y += y * delta * projectileSpeed;
     }

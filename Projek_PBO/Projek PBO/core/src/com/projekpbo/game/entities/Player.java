@@ -48,13 +48,7 @@ public class Player extends Rectangle {
     public void movePlayer(float delta, OrthographicCamera camera, ArrayList<Projectile> projectileList) {
         for(int i = 0; i < pickUps.size(); i++) {
             if(pickUps.get(i).durationExpired()) {
-                System.out.println("Removing pickup!");
                 pickUps.remove(i);
-                System.out.println("start");
-                for(PickUp pu : pickUps) {
-                    System.out.println(pu.getClass());
-                }
-                System.out.println("end");
                 i--;
             } else {
                 pickUps.get(i).doEffect();
